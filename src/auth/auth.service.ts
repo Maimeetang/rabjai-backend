@@ -1,40 +1,33 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UserService } from '../user/user.service.js';
 import { LineAuthService } from './line-auth.service.js';
+import { AuthenticatedUser } from './interface/user.interface.js';
+import { UserService } from '../user/user.service.js';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
+    private readonly lineAuthservice: LineAuthService,
     private readonly usersService: UserService,
-    private readonly lineAuthService: LineAuthService,
   ) {}
 
-  async loginWithLine(idToken: string) {
-    const lineProfile = await this.lineAuthService.verifyToken(idToken);
-
+  async validateUser(idToken: string): Promise<AuthenticatedUser> {
+    const lineProfile = await this.lineAuthservice.verifyToken(idToken);
     let user = await this.usersService.findByLineUserId(lineProfile.sub);
 
     if (!user) {
-      user = await this.usersService.create({
-        lineUserId: lineProfile.sub,
-      });
+      user = await this.usersService.create(
+        lineProfile.sub,
+        lineProfile.name,
+        lineProfile.picture,
+      );
     }
 
-    const payload = {
-      sub: user.id,
-      role: user.role,
-    };
+    return { sub: user.id, role: user.role };
+  }
 
-    const accessToken = await this.jwtService.signAsync(payload);
-
-    return {
-      accessToken,
-      user: {
-        id: user.id,
-        role: user.role,
-      },
-    };
+  async login(user: AuthenticatedUser): Promise<string> {
+    return this.jwtService.sign(user);
   }
 }

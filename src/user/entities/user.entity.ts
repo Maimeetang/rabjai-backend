@@ -19,9 +19,21 @@ export class User {
   lineUserId: string;
 
   @Column({
+    name: 'name',
+    length: 50,
+  })
+  name: string;
+
+  @Column({
+    name: 'picture_url',
+    length: 255,
+  })
+  pictureUrl: string;
+
+  @Column({
     type: 'varchar',
     length: 20,
-    default: 'USER',
+    default: 'GUEST',
   })
   role: string;
 

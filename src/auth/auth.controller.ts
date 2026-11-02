@@ -1,51 +1,39 @@
-import {
-  Controller,
-  Post,
-  Body,
-  HttpCode,
-  HttpStatus,
-  Res,
-} from '@nestjs/common';
-
-import type { Response } from 'express';
+import { Controller, Post, Request, Res, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service.js';
-import { LineLoginDto } from './dto/line-login.dto.js';
+import { AuthGuard } from '@nestjs/passport';
+import { HttpAdapterHost } from '@nestjs/core';
+import type { AuthenticatedRequest } from './interface/request.interface.js';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly adapterHost: HttpAdapterHost,
+  ) {}
 
   @Post('line')
-  @HttpCode(HttpStatus.OK)
-  async loginWithLine(
-    @Body() dto: LineLoginDto,
+  @UseGuards(AuthGuard('line'))
+  async login(
+    @Request() req: AuthenticatedRequest,
     @Res({ passthrough: true }) res: Response,
   ) {
-    const result = await this.authService.loginWithLine(dto.idToken);
+    const accessToken = await this.authService.login(req.user);
 
-    res.cookie('access_token', result.accessToken, {
+    this.adapterHost.httpAdapter.setCookie(res, 'access_token', accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      maxAge: 24 * 60 * 60 * 1000,
-      path: '/',
+      maxAge: 24 * 60 * 60,
     });
 
     return {
       message: 'Login successful',
-      user: result.user,
     };
   }
 
   @Post('logout')
-  @HttpCode(HttpStatus.OK)
   logout(@Res({ passthrough: true }) res: Response) {
-    res.clearCookie('access_token', {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      path: '/',
-    });
+    this.adapterHost.httpAdapter.clearCookie(res, 'access_token');
 
     return {
       message: 'Logout successful',

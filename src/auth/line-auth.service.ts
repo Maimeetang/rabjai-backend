@@ -1,18 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { LineResponse } from './dto/line-res.js';
 import axios from 'axios';
-
-export interface LineResponse {
-  sub: string; // User ID for which the ID token was generated.
-  /*
-  the feilds below are not included 
-  if the profile scope wasn't specified 
-  in the authorization request.
-  */
-  name?: string; // User's display name.
-  picture?: string; // User's profile image URL.
-  email?: string; // User's email address.
-}
 
 @Injectable()
 export class LineAuthService {
@@ -20,7 +9,6 @@ export class LineAuthService {
 
   async verifyToken(idToken: string): Promise<LineResponse> {
     const client_id = this.configService.get<string>('LINE_CHANNEL_ID');
-
     if (!client_id) {
       throw new Error('LINE_CHANNEL_ID is not configured');
     }
