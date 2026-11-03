@@ -8,7 +8,7 @@ export const databaseConfig = (
   url: configService.get<string>('DATABASE_URL'),
 
   autoLoadEntities: true,
-  synchronize: false,
+  synchronize: process.env.NODE_ENV === 'development',
 
   ssl: {
     rejectUnauthorized: false,

@@ -15,6 +15,7 @@ export class User {
     name: 'line_uid',
     unique: true,
     length: 50,
+    nullable: false,
   })
   lineUserId: string;
 
@@ -34,9 +35,13 @@ export class User {
     type: 'varchar',
     length: 20,
     default: 'GUEST',
+    nullable: false,
   })
   role: string;
 
-  @CreateDateColumn({ name: 'created_at' })
+  @CreateDateColumn({
+    name: 'created_at',
+    nullable: false,
+  })
   createdAt: Date;
 }

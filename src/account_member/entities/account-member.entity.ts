@@ -1,0 +1,73 @@
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+
+import { Account } from '../../account/entities/account.entity.js';
+import { User } from '../../user/entities/user.entity.js';
+
+@Entity('account_members')
+@Index('uq_account_member', ['accountId', 'userId'], {
+  unique: true,
+})
+export class AccountMember {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column({
+    name: 'account_id',
+    type: 'int',
+    nullable: false,
+  })
+  accountId: number;
+
+  @Column({
+    name: 'user_id',
+    type: 'int',
+    nullable: false,
+  })
+  userId: number;
+
+  @Column({
+    type: 'varchar',
+    length: 20,
+    nullable: false,
+  })
+  role: string;
+
+  @CreateDateColumn({
+    name: 'created_at',
+    type: 'timestamptz',
+    default: () => 'now()',
+    nullable: false,
+  })
+  createdAt: Date;
+
+  @UpdateDateColumn({
+    name: 'updated_at',
+    type: 'timestamptz',
+    default: () => 'now()',
+    nullable: false,
+  })
+  updatedAt: Date;
+
+  @ManyToOne(() => Account, { onDelete: 'CASCADE' })
+  @JoinColumn({
+    name: 'account_id',
+    foreignKeyConstraintName: 'fk_account_members_account',
+  })
+  account: Account;
+
+  @ManyToOne(() => User)
+  @JoinColumn({
+    name: 'user_id',
+    foreignKeyConstraintName: 'fk_account_members_user',
+  })
+  user: User;
+}
