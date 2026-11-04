@@ -1,4 +1,10 @@
-import { Controller, Get, Request, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  NotFoundException,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { UserService } from './user.service.js';
 import { GetProfileResDto } from './dto/getprofile-res.dto.js';
 import { AuthGuard } from '@nestjs/passport';
@@ -14,9 +20,13 @@ export class UserController {
     @Request() req: AuthenticatedRequest,
   ): Promise<GetProfileResDto> {
     const user = await this.userService.findById(req.user.sub);
+
+    if (!user) {
+      throw new NotFoundException(`User with ID: ${req.user.sub} not found`);
+    }
+
     return {
       id: user.id,
-      lineUserId: user.lineUserId,
       name: user.name,
       pictureUrl: user.pictureUrl,
       role: user.role,

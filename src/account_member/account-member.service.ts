@@ -18,7 +18,7 @@ export class AccountMemberService {
     });
   }
 
-  async findByUserId(userId: number): Promise<AccountMember[]> {
+  async findByUserId(userId: string): Promise<AccountMember[]> {
     return this.accountMemberRepository.find({
       where: { userId },
       relations: { account: true },
@@ -27,7 +27,7 @@ export class AccountMemberService {
 
   async findByAccountAndUser(
     accountId: number,
-    userId: number,
+    userId: string,
   ): Promise<AccountMember> {
     const membership = await this.accountMemberRepository.findOne({
       where: { accountId, userId },
@@ -42,7 +42,7 @@ export class AccountMemberService {
     return membership;
   }
 
-  async isMember(accountId: number, userId: number): Promise<boolean> {
+  async isMember(accountId: number, userId: string): Promise<boolean> {
     return this.accountMemberRepository.exists({
       where: { accountId, userId },
     });

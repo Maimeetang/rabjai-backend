@@ -11,13 +11,13 @@ export class AccountService {
     private readonly accountMemberService: AccountMemberService,
   ) {}
 
-  async findBelongsToUser(userId: number): Promise<Account[]> {
+  async findBelongsToUser(userId: string): Promise<Account[]> {
     return (await this.accountMemberService.findByUserId(userId)).map(
       (membership) => membership.account,
     );
   }
 
-  async findOne(accountId: number, userId: number): Promise<Account> {
+  async findOne(accountId: number, userId: string): Promise<Account> {
     const membership = await this.accountMemberService.findByAccountAndUser(
       accountId,
       userId,
@@ -30,7 +30,7 @@ export class AccountService {
     return membership.account;
   }
 
-  async createPersonalAccount(userId: number): Promise<Account> {
+  async createPersonalAccount(userId: string): Promise<Account> {
     return await this.dataSource.transaction(async (manager) => {
       const accountRepository = manager.getRepository(Account);
       const memberRepository = manager.getRepository(AccountMember);

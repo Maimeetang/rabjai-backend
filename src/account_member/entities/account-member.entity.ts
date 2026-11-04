@@ -17,7 +17,7 @@ import { User } from '../../user/entities/user.entity.js';
   unique: true,
 })
 export class AccountMember {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('identity')
   id: number;
 
   @Column({
@@ -29,10 +29,11 @@ export class AccountMember {
 
   @Column({
     name: 'user_id',
-    type: 'int',
+    type: 'varchar',
+    length: 50,
     nullable: false,
   })
-  userId: number;
+  userId: string;
 
   @Column({
     type: 'varchar',

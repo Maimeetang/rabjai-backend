@@ -1,11 +1,8 @@
 import { IsNumber, IsString } from 'class-validator';
 
 export class GetProfileResDto {
-  @IsNumber()
-  id: number;
-
   @IsString()
-  lineUserId: string;
+  id: string;
 
   @IsString()
   name: string;

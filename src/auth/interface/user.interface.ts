@@ -1,4 +1,4 @@
 export interface AuthenticatedUser {
-  sub: number;
+  sub: string;
   role: string;
 }

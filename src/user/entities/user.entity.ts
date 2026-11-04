@@ -3,21 +3,16 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  UpdateDateColumn,
+  PrimaryColumn,
 } from 'typeorm';
 
 @Entity('users')
 export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Column({
-    name: 'line_uid',
-    unique: true,
+  @PrimaryColumn({
+    type: 'varchar',
     length: 50,
-    nullable: false,
   })
-  lineUserId: string;
+  id: string;
 
   @Column({
     name: 'name',

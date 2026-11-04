@@ -10,9 +10,9 @@ export class UserService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  async findByLineUserId(lineUserId: string): Promise<User | null> {
+  async findById(id: string): Promise<User | null> {
     return this.userRepository.findOne({
-      where: { lineUserId },
+      where: { id },
     });
   }
 
@@ -22,24 +22,12 @@ export class UserService {
     linePictureUrl: string,
   ): Promise<User> {
     const user = this.userRepository.create({
-      lineUserId: lineUserId,
+      id: lineUserId,
       name: lineName,
       pictureUrl: linePictureUrl,
       role: 'GUEST',
     });
 
     return this.userRepository.save(user);
-  }
-
-  async findById(id: number): Promise<User> {
-    const user = await this.userRepository.findOne({
-      where: { id },
-    });
-
-    if (!user) {
-      throw new NotFoundException(`User with ID: ${id} not found`);
-    }
-
-    return user;
   }
 }

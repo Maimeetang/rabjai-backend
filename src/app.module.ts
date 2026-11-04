@@ -8,6 +8,8 @@ import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
 import { AccountModule } from './account/account.module.js';
 import { AccountMemberModule } from './account_member/account-member.module.js';
+import { TransactionModule } from './transaction/transaction.module.js';
+import { CategoryModule } from './category/category.module.js';
 
 @Module({
   imports: [
@@ -25,6 +27,8 @@ import { AccountMemberModule } from './account_member/account-member.module.js';
     AuthModule,
     AccountModule,
     AccountMemberModule,
+    TransactionModule,
+    CategoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],

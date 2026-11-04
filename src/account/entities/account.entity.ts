@@ -7,7 +7,7 @@ import {
 
 @Entity('accounts')
 export class Account {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('identity')
   id: number;
 
   @Column({

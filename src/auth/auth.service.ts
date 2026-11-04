@@ -14,7 +14,7 @@ export class AuthService {
 
   async validateUser(idToken: string): Promise<AuthenticatedUser> {
     const lineProfile = await this.lineAuthservice.verifyToken(idToken);
-    let user = await this.usersService.findByLineUserId(lineProfile.sub);
+    let user = await this.usersService.findById(lineProfile.sub);
 
     if (!user) {
       user = await this.usersService.create(
