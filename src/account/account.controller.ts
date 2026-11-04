@@ -33,6 +33,6 @@ export class AccountController {
   @Post('personal')
   @UseGuards(AuthGuard('jwt'))
   createPersonalAccount(@Request() req: AuthenticatedRequest) {
-    return this.accountService.createPersonalAccount(req.user.sub);
+    return this.accountService.ensurePersonalAccount(req.user.sub);
   }
 }

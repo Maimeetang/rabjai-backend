@@ -8,11 +8,10 @@ import { JwtStrategy } from './strategies/jwt.strategy.js';
 import { UserModule } from '../user/user.module.js';
 import { LineStrategy } from './strategies/line.strategy.js';
 import { LineAuthService } from './line-auth.service.js';
+import { AccountModule } from '../account/account.module.js';
 
 @Module({
   imports: [
-    PassportModule,
-    UserModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -21,6 +20,9 @@ import { LineAuthService } from './line-auth.service.js';
         signOptions: { expiresIn: '1d' },
       }),
     }),
+    PassportModule,
+    UserModule,
+    AccountModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, LineAuthService, JwtStrategy, LineStrategy],

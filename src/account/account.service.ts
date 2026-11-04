@@ -30,7 +30,7 @@ export class AccountService {
     return membership.account;
   }
 
-  async createPersonalAccount(userId: string): Promise<Account> {
+  async ensurePersonalAccount(userId: string): Promise<Account> {
     return await this.dataSource.transaction(async (manager) => {
       const accountRepository = manager.getRepository(Account);
       const memberRepository = manager.getRepository(AccountMember);
