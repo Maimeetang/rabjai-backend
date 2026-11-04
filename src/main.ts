@@ -8,6 +8,9 @@ async function bootstrap() {
   const app = await NestFactory.create<NestNodeApplication>(
     AppModule,
     new NodeAdapter(),
+    {
+      rawBody: true,
+    },
   );
 
   app.setGlobalPrefix('api');

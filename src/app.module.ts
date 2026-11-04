@@ -10,6 +10,7 @@ import { AccountModule } from './account/account.module.js';
 import { AccountMemberModule } from './account_member/account-member.module.js';
 import { TransactionModule } from './transaction/transaction.module.js';
 import { CategoryModule } from './category/category.module.js';
+import { LineWebhookModule } from './webhooks/line/line-webhooks.module.js';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { CategoryModule } from './category/category.module.js';
     AccountMemberModule,
     TransactionModule,
     CategoryModule,
+    LineWebhookModule,
   ],
   controllers: [AppController],
   providers: [AppService],
