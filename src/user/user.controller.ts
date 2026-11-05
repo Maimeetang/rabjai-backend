@@ -5,10 +5,10 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
-import { UserService } from './user.service.js';
+import type { AuthenticatedRequest } from '@/auth/interface/request.interface.js';
 import { GetProfileResDto } from './dto/getprofile-res.dto.js';
+import { UserService } from './user.service.js';
 import { AuthGuard } from '@nestjs/passport';
-import type { AuthenticatedRequest } from '../auth/interface/request.interface.js';
 
 @Controller('users')
 export class UserController {

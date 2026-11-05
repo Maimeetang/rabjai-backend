@@ -1,9 +1,9 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { AccountService } from '@/account/account.service.js';
+import { UserService } from '@/user/user.service.js';
 import { LineAuthService } from './line-auth.service.js';
 import { AuthenticatedUser } from './interface/user.interface.js';
-import { UserService } from '../user/user.service.js';
-import { AccountService } from '../account/account.service.js';
 
 @Injectable()
 export class AuthService {

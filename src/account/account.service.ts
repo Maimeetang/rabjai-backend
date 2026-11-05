@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Account } from './entities/account.entity.js';
 import { DataSource } from 'typeorm';
-import { AccountMemberService } from '../account_member/account-member.service.js';
-import { AccountMember } from '../account_member/entities/account-member.entity.js';
+import { AccountMemberService } from '@/account_member/account-member.service.js';
+import { AccountMember } from '@/account_member/entities/account-member.entity.js';
 
 @Injectable()
 export class AccountService {

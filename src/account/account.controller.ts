@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { AccountService } from './account.service.js';
 import { AuthGuard } from '@nestjs/passport';
-import type { AuthenticatedRequest } from '../auth/interface/request.interface.js';
+import type { AuthenticatedRequest } from '@/auth/interface/request.interface.js';
 
 @Controller('accounts')
 export class AccountController {

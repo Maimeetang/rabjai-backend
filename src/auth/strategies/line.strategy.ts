@@ -1,9 +1,9 @@
 import { Strategy } from 'passport-custom';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { AuthenticatedUser } from '@/auth/interface/user.interface.js';
+import { AuthService } from '@/auth/auth.service.js';
 import type { Request } from 'express';
-import { AuthService } from '../auth.service.js';
-import { AuthenticatedUser } from '../interface/user.interface.js';
 
 @Injectable()
 export class LineStrategy extends PassportStrategy(Strategy, 'line') {
