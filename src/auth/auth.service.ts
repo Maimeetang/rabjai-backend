@@ -10,16 +10,16 @@ export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
     private readonly lineAuthservice: LineAuthService,
-    private readonly usersService: UserService,
+    private readonly userService: UserService,
     private readonly accountService: AccountService,
   ) {}
 
   async validateUser(idToken: string): Promise<AuthenticatedUser> {
     const lineProfile = await this.lineAuthservice.verifyToken(idToken);
-    let user = await this.usersService.findById(lineProfile.sub);
+    let user = await this.userService.findById(lineProfile.sub);
 
     if (!user) {
-      user = await this.usersService.create(
+      user = await this.userService.create(
         lineProfile.sub,
         lineProfile.name,
         lineProfile.picture,
