@@ -23,6 +23,7 @@ export class User {
   @Column({
     name: 'picture_url',
     length: 255,
+    nullable: true,
   })
   pictureUrl: string;
 

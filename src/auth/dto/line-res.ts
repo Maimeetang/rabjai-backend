@@ -18,3 +18,11 @@ export class LineResponse {
   @IsEmail()
   email: string; // User's email address.
 }
+
+export class LineErrorResponse {
+  @IsString()
+  error: string;
+
+  @IsString()
+  error_description: string;
+}

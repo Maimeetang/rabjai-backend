@@ -1,4 +1,4 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsString } from 'class-validator';
 
 export class GetProfileResDto {
   @IsString()
@@ -8,7 +8,7 @@ export class GetProfileResDto {
   name: string;
 
   @IsString()
-  pictureUrl: string;
+  pictureUrl?: string;
 
   @IsString()
   role: string;

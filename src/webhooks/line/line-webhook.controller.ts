@@ -15,7 +15,7 @@ import { validateSignature } from '@line/bot-sdk';
 import { ConfigService } from '@nestjs/config';
 
 import { LineWebhookService } from './line-webhook.service.js';
-import { LineBotResponse } from './dto/linebot-res.dto.js';
+import { LineBotWebhookRequest } from './dto/linebot-req.dto.js';
 
 @Controller('webhooks/line')
 export class LineWebhookController {
@@ -27,7 +27,8 @@ export class LineWebhookController {
   @Post()
   @HttpCode(HttpStatus.OK)
   async handleWebhook(
-    @Req() req: RawBodyRequest<Request<unknown, unknown, LineBotResponse>>,
+    @Req()
+    req: RawBodyRequest<Request<unknown, unknown, LineBotWebhookRequest>>,
     @Headers('x-line-signature') signature: string,
   ) {
     const channelSecret = this.configService.getOrThrow<string>(

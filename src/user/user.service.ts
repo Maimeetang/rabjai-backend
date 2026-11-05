@@ -19,7 +19,7 @@ export class UserService {
   async create(
     lineUserId: string,
     lineName: string,
-    linePictureUrl: string,
+    linePictureUrl?: string,
   ): Promise<User> {
     const user = this.userRepository.create({
       id: lineUserId,
