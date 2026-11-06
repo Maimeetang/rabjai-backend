@@ -9,6 +9,7 @@ import { UserModule } from '../user/user.module.js';
 import { LineStrategy } from './strategies/line.strategy.js';
 import { LineAuthService } from './line-auth.service.js';
 import { AccountModule } from '../account/account.module.js';
+import { RegistrationModule } from '@/registration/registration.module.js';
 
 @Module({
   imports: [
@@ -21,8 +22,8 @@ import { AccountModule } from '../account/account.module.js';
       }),
     }),
     PassportModule,
+    RegistrationModule,
     UserModule,
-    AccountModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, LineAuthService, JwtStrategy, LineStrategy],

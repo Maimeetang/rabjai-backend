@@ -4,6 +4,7 @@ import {
   Column,
   CreateDateColumn,
 } from 'typeorm';
+import { AccountType } from '../enums/account-type.enum.js';
 
 @Entity('accounts')
 export class Account {
@@ -15,7 +16,7 @@ export class Account {
     type: 'varchar',
     length: 20,
   })
-  type: string;
+  type: AccountType;
 
   @CreateDateColumn({
     name: 'created_at',

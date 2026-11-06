@@ -2,6 +2,7 @@ import { BadGatewayException, Injectable, Logger } from '@nestjs/common';
 import { UserService } from '@/user/user.service.js';
 import { ConfigService } from '@nestjs/config';
 import { LineBotClient, webhook } from '@line/bot-sdk';
+import { RegistrationService } from '@/registration/registration.service.js';
 
 @Injectable()
 export class LineFollowHandler {
@@ -9,6 +10,7 @@ export class LineFollowHandler {
 
   constructor(
     private readonly userService: UserService,
+    private readonly registrationService: RegistrationService,
     private readonly configService: ConfigService,
   ) {}
 
@@ -33,7 +35,7 @@ export class LineFollowHandler {
     if (!user) {
       const profile = await client.getProfile(userId);
 
-      await this.userService.create(
+      user = await this.registrationService.register(
         profile.userId,
         profile.displayName,
         profile.pictureUrl,
