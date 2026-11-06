@@ -11,7 +11,7 @@ import {
 
 import { Account } from '@/account/entities/account.entity.js';
 import { User } from '@/user/entities/user.entity.js';
-import { MemberType } from '../enums/member-role.enum.js';
+import { MemberRole } from '../enums/member-role.enum.js';
 
 @Entity('account_members')
 @Index('uq_account_member', ['accountId', 'userId'], {
@@ -41,7 +41,7 @@ export class AccountMember {
     length: 20,
     nullable: false,
   })
-  role: MemberType;
+  role: MemberRole;
 
   @CreateDateColumn({
     name: 'created_at',

@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EntityManager, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { AccountMember } from './entities/account-member.entity.js';
-import { MemberType } from './enums/member-role.enum.js';
+import { MemberRole } from './enums/member-role.enum.js';
 
 @Injectable()
 export class AccountMemberService {
@@ -14,20 +14,13 @@ export class AccountMemberService {
   async create(
     accountId: number,
     userId: string,
-    role: MemberType,
-    transactionalEntityManager?: EntityManager,
+    role: MemberRole,
   ): Promise<AccountMember> {
-    const repository = transactionalEntityManager
-      ? transactionalEntityManager.getRepository(AccountMember)
-      : this.accountMemberRepository;
-
-    const member = repository.create({
+    return this.accountMemberRepository.save({
       accountId: accountId,
       userId: userId,
       role: role,
     });
-
-    return this.accountMemberRepository.save(member);
   }
 
   async findByAccountId(accountId: number): Promise<AccountMember[]> {

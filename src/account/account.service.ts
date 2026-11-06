@@ -1,8 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Account } from './entities/account.entity.js';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EntityManager, Repository } from 'typeorm';
-import { AccountType } from './enums/account-type.enum.js';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class AccountService {
@@ -19,17 +18,5 @@ export class AccountService {
     }
 
     return account;
-  }
-
-  async create(
-    type: AccountType,
-    transactionalEntityManager?: EntityManager,
-  ): Promise<Account> {
-    const repository = transactionalEntityManager
-      ? transactionalEntityManager.getRepository(Account)
-      : this.accountRepository;
-
-    const account = repository.create({ type: type });
-    return this.accountRepository.save(account);
   }
 }

@@ -1,6 +1,6 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EntityManager, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { User } from './entities/user.entity.js';
 
 @Injectable()
@@ -14,25 +14,5 @@ export class UserService {
     return this.userRepository.findOne({
       where: { id },
     });
-  }
-
-  async create(
-    lineUserId: string,
-    lineName: string,
-    linePictureUrl?: string,
-    transactionalEntityManager?: EntityManager,
-  ): Promise<User> {
-    const repository = transactionalEntityManager
-      ? transactionalEntityManager.getRepository(User)
-      : this.userRepository;
-
-    const user = repository.create({
-      id: lineUserId,
-      name: lineName,
-      pictureUrl: linePictureUrl,
-      role: 'GUEST',
-    });
-
-    return this.userRepository.save(user);
   }
 }

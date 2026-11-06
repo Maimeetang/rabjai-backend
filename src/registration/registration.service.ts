@@ -1,45 +1,41 @@
-import { AccountService } from '@/account/account.service.js';
+import { Account } from '@/account/entities/account.entity.js';
 import { AccountType } from '@/account/enums/account-type.enum.js';
-import { AccountMemberService } from '@/account_member/account-member.service.js';
-import { MemberType } from '@/account_member/enums/member-role.enum.js';
+import { AccountMember } from '@/account_member/entities/account-member.entity.js';
+import { MemberRole } from '@/account_member/enums/member-role.enum.js';
 import { User } from '@/user/entities/user.entity.js';
-import { UserService } from '@/user/user.service.js';
 import { Injectable } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 
 @Injectable()
 export class RegistrationService {
-  constructor(
-    private readonly dataSource: DataSource,
-    private readonly userService: UserService,
-    private readonly accountService: AccountService,
-    private readonly memberService: AccountMemberService,
-  ) {}
+  constructor(private readonly dataSource: DataSource) {}
 
   async register(
     lineUserId: string,
     lineName: string,
     linePictureUrl?: string,
   ): Promise<User> {
-    return this.dataSource.transaction(async (transactionalEntityManager) => {
-      const user = await this.userService.create(
-        lineUserId,
-        lineName,
-        linePictureUrl,
-        transactionalEntityManager,
-      );
+    return this.dataSource.transaction(async (manager) => {
+      const userRepository = manager.getRepository(User);
+      const accountRepository = manager.getRepository(Account);
+      const memberRepository = manager.getRepository(AccountMember);
 
-      const account = await this.accountService.create(
-        AccountType.PERSONAL,
-        transactionalEntityManager,
-      );
+      const user = await userRepository.save({
+        id: lineUserId,
+        name: lineName,
+        pictureUrl: linePictureUrl,
+        role: 'GUEST',
+      });
 
-      await this.memberService.create(
-        account.id,
-        user.id,
-        MemberType.OWNER,
-        transactionalEntityManager,
-      );
+      const account = await accountRepository.save({
+        type: AccountType.PERSONAL,
+      });
+
+      await memberRepository.save({
+        accountId: account.id,
+        userId: user.id,
+        role: MemberRole.OWNER,
+      });
 
       return user;
     });
