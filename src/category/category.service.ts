@@ -56,6 +56,13 @@ export class CategoryService {
     });
   }
 
+  async findOne(id: number, withAccountRelation = false) {
+    return this.categoryRepository.findOne({
+      where: { id },
+      relations: { account: withAccountRelation },
+    });
+  }
+
   editName() {}
 
   delete() {}
