@@ -3,6 +3,7 @@ import { UserService } from '@/user/user.service.js';
 import { ConfigService } from '@nestjs/config';
 import { LineBotClient, webhook } from '@line/bot-sdk';
 import { RegistrationService } from '@/registration/registration.service.js';
+import { welcomeMessage } from '../flex_messages/welcome-message.js';
 
 @Injectable()
 export class LineFollowHandler {
@@ -15,6 +16,7 @@ export class LineFollowHandler {
   ) {}
 
   async handle(event: webhook.FollowEvent): Promise<void> {
+    const liffUrl = this.configService.getOrThrow<string>('LIFF_URL');
     const channelAccessToken = this.configService.getOrThrow<string>(
       'LINE_CHANNEL_ACCESS_TOKEN',
     );
@@ -46,12 +48,7 @@ export class LineFollowHandler {
 
     await client.replyMessage({
       replyToken: event.replyToken,
-      messages: [
-        {
-          type: 'text',
-          text: 'ยินดีต้อนรับสู่ RubJai!',
-        },
-      ],
+      messages: [welcomeMessage(liffUrl)],
     });
   }
 }
