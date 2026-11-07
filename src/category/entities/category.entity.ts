@@ -11,7 +11,7 @@ import { Account } from '@/account/entities/account.entity.js';
 
 @Entity('categories')
 export class Category {
-  @PrimaryGeneratedColumn('identity')
+  @PrimaryGeneratedColumn('identity', { type: 'bigint' })
   id: number;
 
   @Column({

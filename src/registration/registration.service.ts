@@ -1,16 +1,20 @@
-import { Account } from '@/account/entities/account.entity.js';
-import { AccountType } from '@/account/enums/account-type.enum.js';
-import { AccountMember } from '@/account_member/entities/account-member.entity.js';
-import { MemberRole } from '@/account_member/enums/member-role.enum.js';
-import { Category } from '@/category/entities/category.entity.js';
-import { CategoryType } from '@/category/enums/category-type.enum.js';
+import { AccountService } from '@/account/account.service.js';
+import { AccountMemberService } from '@/account_member/account-member.service.js';
+import { CategoryService } from '@/category/category.service.js';
 import { User } from '@/user/entities/user.entity.js';
+import { UserService } from '@/user/user.service.js';
 import { Injectable } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 
 @Injectable()
 export class RegistrationService {
-  constructor(private readonly dataSource: DataSource) {}
+  constructor(
+    private readonly dataSource: DataSource,
+    private readonly userService: UserService,
+    private readonly accountService: AccountService,
+    private readonly accountMemberService: AccountMemberService,
+    private readonly categoryService: CategoryService,
+  ) {}
 
   async register(
     lineUserId: string,
@@ -18,66 +22,17 @@ export class RegistrationService {
     linePictureUrl?: string,
   ): Promise<User> {
     return this.dataSource.transaction(async (manager) => {
-      const userRepository = manager.getRepository(User);
-      const accountRepository = manager.getRepository(Account);
-      const memberRepository = manager.getRepository(AccountMember);
-      const categoryRepository = manager.getRepository(Category);
-
-      const user = await userRepository.save({
-        id: lineUserId,
-        name: lineName,
-        pictureUrl: linePictureUrl,
-        role: 'GUEST',
-      });
-
-      const account = await accountRepository.save({
-        type: AccountType.PERSONAL,
-      });
-
-      await memberRepository.save({
-        accountId: account.id,
-        userId: user.id,
-        role: MemberRole.OWNER,
-      });
-
-      await categoryRepository.save([
-        // Expense
+      const user = await this.userService.createUser(
         {
-          accountId: account.id,
-          name: 'ค่าอาหาร',
-          type: CategoryType.EXPENSE,
+          id: lineUserId,
+          name: lineName,
+          pictureUrl: linePictureUrl,
         },
-        {
-          accountId: account.id,
-          name: 'ค่าเดินทาง',
-          type: CategoryType.EXPENSE,
-        },
-        {
-          accountId: account.id,
-          name: 'ค่าที่พัก',
-          type: CategoryType.EXPENSE,
-        },
-        {
-          accountId: account.id,
-          name: 'อื่น ๆ',
-          type: CategoryType.EXPENSE,
-          isFallback: true,
-        },
-
-        // Income
-        {
-          accountId: account.id,
-          name: 'เงินเดือน',
-          type: CategoryType.INCOME,
-        },
-        {
-          accountId: account.id,
-          name: 'อื่น ๆ',
-          type: CategoryType.INCOME,
-          isFallback: true,
-        },
-      ]);
-
+        manager,
+      );
+      const account = await this.accountService.createPersonalAccount(manager);
+      await this.accountMemberService.addOwner(account.id, user.id, manager);
+      await this.categoryService.seedDefaultCategories(account.id, manager);
       return user;
     });
   }
