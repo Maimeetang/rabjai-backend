@@ -63,6 +63,15 @@ export class CategoryService {
     });
   }
 
+  async findByAccountId(accountId: number): Promise<Category[]> {
+    return this.categoryRepository.find({
+      where: [{ accountId }],
+      order: {
+        id: 'ASC',
+      },
+    });
+  }
+
   editName() {}
 
   delete() {}

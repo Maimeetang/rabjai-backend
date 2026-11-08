@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, Repository } from 'typeorm';
 import { AccountMember } from './entities/account-member.entity.js';
 import { MemberRole } from './enums/member-role.enum.js';
+import { AccountType } from '@/account/enums/account-type.enum.js';
 
 @Injectable()
 export class AccountMemberService {
@@ -23,18 +24,26 @@ export class AccountMemberService {
     });
   }
 
-  async findByAccountId(accountId: number): Promise<AccountMember[]> {
-    return this.accountMemberRepository.find({
-      where: { accountId },
-      relations: { user: true },
+  async findPersonalAccount(userId: string): Promise<AccountMember> {
+    const membership = await this.accountMemberRepository.findOne({
+      where: {
+        userId,
+        account: {
+          type: AccountType.PERSONAL,
+        },
+      },
+      relations: {
+        account: true,
+      },
     });
-  }
 
-  async findByUserId(userId: string): Promise<AccountMember[]> {
-    return this.accountMemberRepository.find({
-      where: { userId },
-      relations: { account: true },
-    });
+    if (!membership) {
+      throw new NotFoundException(
+        `Personal account for userId: ${userId} not found`,
+      );
+    }
+
+    return membership;
   }
 
   async findByAccountIdAndUserId(
