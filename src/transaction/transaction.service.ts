@@ -1,61 +1,95 @@
 import {
   BadRequestException,
-  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Transaction } from './entities/transaction.entity.js';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CategoryService } from '@/category/category.service.js';
-import { AccountMemberService } from '@/account_member/account-member.service.js';
-import { MemberRole } from '@/account_member/enums/member-role.enum.js';
+import { CreateTransactionDto } from './dto/create-transaction.dto.js';
+import { UpdateTransactionDto } from './dto/update-transaction.dto.js';
+import { AuthorizationService } from '@/common/authorization/authorization.service.js';
 
 @Injectable()
 export class TransactionService {
   constructor(
     @InjectRepository(Transaction)
     private readonly transactionRepository: Repository<Transaction>,
-    private readonly accountMemberService: AccountMemberService,
-    private categoryService: CategoryService,
+    private readonly authorizationService: AuthorizationService,
   ) {}
 
-  async create(
-    userId: string,
-    categoryId: number,
-    amount: string,
-    description: string,
-    transactionDate: Date,
+  async findOne(
+    id: number,
+    options?: {
+      user?: boolean;
+      account?: boolean;
+    },
   ): Promise<Transaction> {
-    const category = await this.categoryService.findOne(categoryId, true);
+    const transaction = await this.transactionRepository.findOne({
+      where: { id },
+      relations: {
+        user: options?.user ?? false,
+        account: options?.account ?? false,
+      },
+    });
 
-    if (!category) {
-      throw new NotFoundException('The specified category does not exist.');
+    if (!transaction) {
+      throw new NotFoundException('Transaction not found.');
     }
 
-    if (!category.accountId) {
-      throw new BadRequestException(
-        'This category is not linked to any account.',
-      );
-    }
+    return transaction;
+  }
 
-    const membership = await this.accountMemberService.findByAccountIdAndUserId(
-      category.accountId,
+  async create(
+    categoryId: number,
+    userId: string,
+    transactionData: CreateTransactionDto,
+  ): Promise<Transaction> {
+    const category = await this.authorizationService.verifyCategory(categoryId);
+
+    const accountId = category.accountId;
+    await this.authorizationService.verifyAccountOwner(accountId, userId);
+
+    const payload = {
+      ...transactionData,
+      categoryId,
+      accountId,
+      userId,
+    };
+
+    const transaction = this.transactionRepository.create(payload);
+    return this.transactionRepository.save(transaction);
+  }
+
+  async update(
+    userId: string,
+    id: number,
+    transactionData: UpdateTransactionDto,
+  ): Promise<Transaction> {
+    const transaction = await this.findOne(id, { account: true });
+    await this.authorizationService.verifyAccountOwner(
+      transaction.accountId,
       userId,
     );
 
-    if (!membership || membership.role !== MemberRole.OWNER) {
-      throw new ForbiddenException(
-        'Only account owners can create transactions.',
+    if (transactionData.categoryId !== undefined) {
+      const category = await this.authorizationService.verifyCategory(
+        transactionData.categoryId,
       );
+
+      if (category.accountId !== transaction.accountId) {
+        throw new BadRequestException('Invalid category');
+      }
     }
 
-    return this.transactionRepository.save({
-      accountId: category.accountId,
-      userId: userId,
-      amount: amount,
-      description: description,
-      transactionDate: transactionDate,
+    await this.transactionRepository.update(id, {
+      ...transactionData,
     });
+    return await this.findOne(id);
+  }
+
+  async findBelongToAccount(accountId: number, userId: string) {
+    await this.authorizationService.verifyAccountOwner(accountId, userId);
+    return this.transactionRepository.find({ where: { accountId } });
   }
 }

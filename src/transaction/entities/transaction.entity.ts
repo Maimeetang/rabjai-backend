@@ -15,7 +15,7 @@ import { Category } from '@/category/entities/category.entity.js';
 @Entity('transactions')
 export class Transaction {
   @PrimaryGeneratedColumn('identity', { type: 'bigint' })
-  id: string;
+  id: number;
 
   @Column({
     name: 'account_id',
@@ -70,7 +70,7 @@ export class Transaction {
 
   @Column({
     name: 'transaction_date',
-    type: 'timestamptz',
+    type: 'date',
     default: () => 'now()',
     nullable: false,
   })
