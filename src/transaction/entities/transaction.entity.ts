@@ -14,7 +14,7 @@ import { Category } from '@/category/entities/category.entity.js';
 
 @Entity('transactions')
 export class Transaction {
-  @PrimaryGeneratedColumn('identity', { type: 'bigint' })
+  @PrimaryGeneratedColumn('identity')
   id: number;
 
   @Column({
