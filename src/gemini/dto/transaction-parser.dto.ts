@@ -1,9 +1,18 @@
 export type TransactionParserStatus = 'SUCCESS' | 'INVALID';
 
-export interface TransactionParserResult {
-  status: TransactionParserStatus;
-  type: 'INCOME' | 'EXPENSE' | null;
-  categoryId: number | null;
-  amount: string | null;
-  description: string | null;
-}
+export type TransactionParserItem = {
+  type: 'INCOME' | 'EXPENSE';
+  categoryId: number;
+  amount: string;
+  description: string;
+};
+
+export type TransactionParserResult =
+  | {
+      status: 'SUCCESS';
+      data: TransactionParserItem[];
+    }
+  | {
+      status: 'INVALID';
+      data: [];
+    };

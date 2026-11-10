@@ -16,5 +16,6 @@ import { CommonModule } from '@/common/common.module.js';
   ],
   providers: [TransactionService],
   controllers: [TransactionController],
+  exports: [TransactionService],
 })
 export class TransactionModule {}

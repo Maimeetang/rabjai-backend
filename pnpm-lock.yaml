@@ -53,6 +53,9 @@ importers:
       cookie-parser:
         specifier: ^1.4.7
         version: 1.4.7
+      dayjs:
+        specifier: ^1.11.23
+        version: 1.11.23
       mysql2:
         specifier: ^3.24.6
         version: 3.24.6(@types/node@24.19.2)
