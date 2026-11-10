@@ -16,17 +16,12 @@ export class RegistrationService {
     private readonly categoryService: CategoryService,
   ) {}
 
-  async register(
-    lineUserId: string,
-    lineName: string,
-    linePictureUrl?: string,
-  ): Promise<User> {
+  async register(lineUserId: string, lineName: string): Promise<User> {
     return this.dataSource.transaction(async (manager) => {
       const user = await this.userService.createUser(
         {
           id: lineUserId,
           name: lineName,
-          pictureUrl: linePictureUrl,
         },
         manager,
       );

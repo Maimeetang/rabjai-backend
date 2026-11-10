@@ -40,7 +40,6 @@ export class LineFollowHandler {
       user = await this.registrationService.register(
         profile.userId,
         profile.displayName,
-        profile.pictureUrl,
       );
     } else {
       this.logger.log('this user already exists');

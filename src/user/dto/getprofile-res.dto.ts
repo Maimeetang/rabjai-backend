@@ -8,8 +8,5 @@ export class GetProfileResDto {
   name: string;
 
   @IsString()
-  pictureUrl?: string;
-
-  @IsString()
   role: string;
 }

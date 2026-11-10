@@ -17,7 +17,7 @@ export class UserService {
   }
 
   async createUser(
-    data: { id: string; name: string; pictureUrl?: string },
+    data: { id: string; name: string },
     manager?: EntityManager,
   ): Promise<User> {
     const repo = manager ? manager.getRepository(User) : this.userRepository;

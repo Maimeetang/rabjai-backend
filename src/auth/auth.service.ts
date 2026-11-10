@@ -22,7 +22,6 @@ export class AuthService {
       user = await this.registrationService.register(
         lineProfile.sub,
         lineProfile.name,
-        lineProfile.picture,
       );
     }
 

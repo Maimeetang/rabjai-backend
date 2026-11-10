@@ -28,7 +28,6 @@ export class UserController {
     return {
       id: user.id,
       name: user.name,
-      pictureUrl: user.pictureUrl,
       role: user.role,
     };
   }

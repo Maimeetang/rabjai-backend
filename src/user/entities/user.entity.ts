@@ -21,13 +21,6 @@ export class User {
   name: string;
 
   @Column({
-    name: 'picture_url',
-    length: 255,
-    nullable: true,
-  })
-  pictureUrl: string;
-
-  @Column({
     type: 'varchar',
     length: 20,
     default: 'GUEST',
