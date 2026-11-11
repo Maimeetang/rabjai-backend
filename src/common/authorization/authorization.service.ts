@@ -4,7 +4,7 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { AccountMemberService } from '@/account_member/account-member.service.js';
-import { MemberRole } from '@/account_member/enums/member-role.enum.js';
+import { MemberRole } from '@/common/enums/member-role.enum.js';
 import { CategoryService } from '@/category/category.service.js';
 import { Category } from '@/category/entities/category.entity.js';
 

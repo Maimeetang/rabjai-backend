@@ -8,7 +8,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { Account } from '@/account/entities/account.entity.js';
-import { CategoryType } from '../enums/category-type.enum.js';
+import { CategoryType } from '../../common/enums/category-type.enum.js';
 
 @Entity('categories')
 export class Category {

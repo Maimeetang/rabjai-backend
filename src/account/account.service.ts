@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Account } from './entities/account.entity.js';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, Repository } from 'typeorm';
-import { AccountType } from './enums/account-type.enum.js';
+import { AccountType } from '../common/enums/account-type.enum.js';
 
 @Injectable()
 export class AccountService {

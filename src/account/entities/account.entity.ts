@@ -4,7 +4,7 @@ import {
   Column,
   CreateDateColumn,
 } from 'typeorm';
-import { AccountType } from '../enums/account-type.enum.js';
+import { AccountType } from '../../common/enums/account-type.enum.js';
 
 @Entity('accounts')
 export class Account {

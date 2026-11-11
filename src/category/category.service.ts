@@ -3,7 +3,7 @@ import { EntityManager, Repository } from 'typeorm';
 import { Category } from './entities/category.entity.js';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AccountMemberService } from '@/account_member/account-member.service.js';
-import { CategoryType } from './enums/category-type.enum.js';
+import { CategoryType } from '../common/enums/category-type.enum.js';
 
 @Injectable()
 export class CategoryService {

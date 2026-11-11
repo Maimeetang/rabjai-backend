@@ -11,7 +11,7 @@ import {
 
 import { Account } from '@/account/entities/account.entity.js';
 import { User } from '@/user/entities/user.entity.js';
-import { MemberRole } from '../enums/member-role.enum.js';
+import { MemberRole } from '../../common/enums/member-role.enum.js';
 
 @Entity('account_members')
 @Index('uq_account_member', ['accountId', 'userId'], {

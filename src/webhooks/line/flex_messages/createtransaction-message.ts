@@ -3,7 +3,7 @@ import 'dayjs/locale/th.js';
 import buddhistEra from 'dayjs/plugin/buddhistEra.js';
 import type { messagingApi } from '@line/bot-sdk';
 import { TransactionFlexItem } from './types/transaction-flex-item.js';
-import { CategoryType } from '@/category/enums/category-type.enum.js';
+import { CategoryType } from '@/common/enums/category-type.enum.js';
 
 dayjs.extend(buddhistEra);
 

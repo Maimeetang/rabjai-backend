@@ -2,8 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, Repository } from 'typeorm';
 import { AccountMember } from './entities/account-member.entity.js';
-import { MemberRole } from './enums/member-role.enum.js';
-import { AccountType } from '@/account/enums/account-type.enum.js';
+import { MemberRole } from '../common/enums/member-role.enum.js';
+import { AccountType } from '@/common/enums/account-type.enum.js';
 
 @Injectable()
 export class AccountMemberService {
