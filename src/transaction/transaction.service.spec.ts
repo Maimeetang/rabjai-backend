@@ -8,6 +8,7 @@ import { Transaction } from './entities/transaction.entity.js';
 import { AuthorizationService } from '@/common/authorization/authorization.service.js';
 import type { CreateTransactionDto } from './dto/create-transaction.dto.js';
 import type { UpdateTransactionDto } from './dto/update-transaction.dto.js';
+import { Between } from 'typeorm';
 
 describe('TransactionService', () => {
   let service: TransactionService;
@@ -208,13 +209,20 @@ describe('TransactionService', () => {
     it('should return transactions belonging to an account', async () => {
       const accountId = 10;
       const userId = 'line-user-id';
+      const startDate = '2026-11-01';
+      const endDate = '2026-11-30';
 
       const expectedResult = [{ id: 1 }, { id: 2 }];
 
       mockAuthorizationService.verifyAccountOwner.mockResolvedValue(undefined);
       mockTransactionRepository.find.mockResolvedValue(expectedResult);
 
-      const result = await service.findBelongToAccount(accountId, userId);
+      const result = await service.findBelongToAccount(
+        accountId,
+        userId,
+        startDate,
+        endDate,
+      );
 
       expect(mockAuthorizationService.verifyAccountOwner).toHaveBeenCalledWith(
         accountId,
@@ -222,7 +230,19 @@ describe('TransactionService', () => {
       );
 
       expect(mockTransactionRepository.find).toHaveBeenCalledWith({
-        where: { accountId },
+        where: {
+          accountId,
+          transactionDate: Between(
+            new Date(`${startDate}T00:00:00`),
+            new Date(`${endDate}T23:59:59.999`),
+          ),
+        },
+        relations: {
+          category: true,
+        },
+        order: {
+          transactionDate: 'DESC',
+        },
       });
 
       expect(result).toEqual(expectedResult);

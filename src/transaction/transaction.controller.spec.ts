@@ -96,17 +96,26 @@ describe('TransactionController', () => {
   describe('findByAccount', () => {
     it('should find transactions belonging to an account', async () => {
       const accountId = 1;
+      const startDate = '2026-11-01';
+      const endDate = '2026-11-30';
       const expectedResult = [{ id: 1 }, { id: 2 }];
 
       mockTransactionService.findBelongToAccount.mockResolvedValue(
         expectedResult,
       );
 
-      const result = await controller.findByAccount(accountId, mockRequest);
+      const result = await controller.findByAccount(
+        accountId,
+        startDate,
+        endDate,
+        mockRequest,
+      );
 
       expect(mockTransactionService.findBelongToAccount).toHaveBeenCalledWith(
         accountId,
         'line-user-id',
+        startDate,
+        endDate,
       );
 
       expect(result).toEqual(expectedResult);

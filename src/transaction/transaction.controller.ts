@@ -8,6 +8,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -42,9 +43,16 @@ export class TransactionController {
   @Get('/account/:accountId')
   findByAccount(
     @Param('accountId', ParseIntPipe) accountId: number,
+    @Query('startDate') startDate: string,
+    @Query('endDate') endDate: string,
     @Req() req: AuthenticatedRequest,
   ) {
-    return this.transactionService.findBelongToAccount(accountId, req.user.sub);
+    return this.transactionService.findBelongToAccount(
+      accountId,
+      req.user.sub,
+      startDate,
+      endDate,
+    );
   }
 
   @Delete(':id')

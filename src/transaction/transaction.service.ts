@@ -3,7 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { Between, Repository } from 'typeorm';
 import { Transaction } from './entities/transaction.entity.js';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateTransactionDto } from './dto/create-transaction.dto.js';
@@ -90,9 +90,29 @@ export class TransactionService {
     return await this.findOne(id);
   }
 
-  async findBelongToAccount(accountId: number, userId: string) {
+  async findBelongToAccount(
+    accountId: number,
+    userId: string,
+    startDate: string,
+    endDate: string,
+  ) {
     await this.authorizationService.verifyAccountOwner(accountId, userId);
-    return this.transactionRepository.find({ where: { accountId } });
+
+    return this.transactionRepository.find({
+      where: {
+        accountId,
+        transactionDate: Between(
+          new Date(`${startDate}T00:00:00`),
+          new Date(`${endDate}T23:59:59.999`),
+        ),
+      },
+      relations: {
+        category: true,
+      },
+      order: {
+        transactionDate: 'DESC',
+      },
+    });
   }
 
   async delete(id: number, userId: string): Promise<Transaction> {
