@@ -23,6 +23,7 @@ export class TransactionService {
     options?: {
       user?: boolean;
       account?: boolean;
+      category?: boolean;
     },
   ): Promise<Transaction> {
     const transaction = await this.transactionRepository.findOne({
@@ -30,6 +31,7 @@ export class TransactionService {
       relations: {
         user: options?.user ?? false,
         account: options?.account ?? false,
+        category: options?.category ?? false,
       },
     });
 
@@ -91,5 +93,21 @@ export class TransactionService {
   async findBelongToAccount(accountId: number, userId: string) {
     await this.authorizationService.verifyAccountOwner(accountId, userId);
     return this.transactionRepository.find({ where: { accountId } });
+  }
+
+  async delete(id: number, userId: string): Promise<Transaction> {
+    const transaction = await this.findOne(id, {
+      account: true,
+      category: true,
+    });
+
+    await this.authorizationService.verifyAccountOwner(
+      transaction.accountId,
+      userId,
+    );
+
+    await this.transactionRepository.delete(id);
+
+    return transaction;
   }
 }

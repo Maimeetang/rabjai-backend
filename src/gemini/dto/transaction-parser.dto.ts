@@ -1,7 +1,9 @@
+import { CategoryType } from '@/category/enums/category-type.enum.js';
+
 export type TransactionParserStatus = 'SUCCESS' | 'INVALID';
 
 export type TransactionParserItem = {
-  type: 'INCOME' | 'EXPENSE';
+  type: CategoryType;
   categoryId: number;
   amount: string;
   description: string;

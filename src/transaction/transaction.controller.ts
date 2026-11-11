@@ -2,6 +2,7 @@ import type { AuthenticatedRequest } from '@/auth/interface/request.interface.js
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -44,5 +45,13 @@ export class TransactionController {
     @Req() req: AuthenticatedRequest,
   ) {
     return this.transactionService.findBelongToAccount(accountId, req.user.sub);
+  }
+
+  @Delete(':id')
+  delete(
+    @Param('id', ParseIntPipe) id: number,
+    @Req() req: AuthenticatedRequest,
+  ) {
+    return this.transactionService.delete(id, req.user.sub);
   }
 }

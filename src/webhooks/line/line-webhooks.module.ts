@@ -10,6 +10,7 @@ import { AccountMemberModule } from '@/account_member/account-member.module.js';
 import { CategoryModule } from '@/category/category.module.js';
 import { GeminiModule } from '@/gemini/gemini.module.js';
 import { TransactionModule } from '@/transaction/transaction.module.js';
+import { LinePostbackHandler } from './handlers/line-postback.handler.js';
 
 @Module({
   imports: [
@@ -22,6 +23,11 @@ import { TransactionModule } from '@/transaction/transaction.module.js';
     GeminiModule,
   ],
   controllers: [LineWebhookController],
-  providers: [LineWebhookService, LineMessageHandler, LineFollowHandler],
+  providers: [
+    LineWebhookService,
+    LineMessageHandler,
+    LineFollowHandler,
+    LinePostbackHandler,
+  ],
 })
 export class LineWebhookModule {}

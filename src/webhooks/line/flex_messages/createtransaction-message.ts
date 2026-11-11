@@ -2,19 +2,10 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/th.js';
 import buddhistEra from 'dayjs/plugin/buddhistEra.js';
 import type { messagingApi } from '@line/bot-sdk';
+import { TransactionFlexItem } from './types/transaction-flex-item.js';
+import { CategoryType } from '@/category/enums/category-type.enum.js';
 
 dayjs.extend(buddhistEra);
-
-export type TransactionFlexItem = {
-  id: number;
-  amount: string;
-  description: string;
-  transactionDate: Date;
-  category: {
-    name: string;
-    type: 'INCOME' | 'EXPENSE';
-  };
-};
 
 export function createTransactionFlexMessage(
   transactions: TransactionFlexItem[],
@@ -35,7 +26,7 @@ export function createTransactionFlexMessage(
     groups.values(),
   ).flatMap((group, index) => {
     const { category } = group[0];
-    const isIncome = category.type === 'INCOME';
+    const isIncome = category.type === CategoryType.INCOME;
 
     const color = isIncome ? '#16A34A' : '#DC2626';
 
@@ -153,6 +144,11 @@ export function createTransactionFlexMessage(
                     height: '32px',
                     justifyContent: 'center',
                     alignItems: 'center',
+                    action: {
+                      type: 'postback',
+                      label: 'ลบรายการ',
+                      data: `action=delete_transaction&id=${transaction.id}`,
+                    },
                     contents: [
                       {
                         type: 'text',

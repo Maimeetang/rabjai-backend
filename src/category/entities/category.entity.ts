@@ -8,6 +8,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { Account } from '@/account/entities/account.entity.js';
+import { CategoryType } from '../enums/category-type.enum.js';
 
 @Entity('categories')
 export class Category {
@@ -32,7 +33,7 @@ export class Category {
     length: 20,
     nullable: false,
   })
-  type: string;
+  type: CategoryType;
 
   @Column({
     name: 'is_fallback',

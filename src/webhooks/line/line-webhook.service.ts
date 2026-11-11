@@ -3,6 +3,7 @@ import { webhook } from '@line/bot-sdk';
 
 import { LineMessageHandler } from './handlers/line-message.handler.js';
 import { LineFollowHandler } from './handlers/line-follow.handler.js';
+import { LinePostbackHandler } from './handlers/line-postback.handler.js';
 
 @Injectable()
 export class LineWebhookService {
@@ -11,6 +12,7 @@ export class LineWebhookService {
   constructor(
     private readonly messageHandler: LineMessageHandler,
     private readonly followHandler: LineFollowHandler,
+    private readonly postbackHandler: LinePostbackHandler,
   ) {}
 
   async handleEvents(events: webhook.Event[]): Promise<void> {
@@ -22,6 +24,10 @@ export class LineWebhookService {
 
         case 'follow':
           await this.followHandler.handle(event);
+          break;
+
+        case 'postback':
+          await this.postbackHandler.handle(event);
           break;
 
         default:

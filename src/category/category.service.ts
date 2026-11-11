@@ -41,7 +41,7 @@ export class CategoryService {
     userId: string,
     accountId: number,
     name: string,
-    type: string,
+    type: CategoryType,
   ): Promise<Category> {
     const isOwner = await this.accountMemberService.isOwner(accountId, userId);
 
