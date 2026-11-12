@@ -1,5 +1,6 @@
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import pg from 'pg';
 
 export const databaseConfig = (
   configService: ConfigService,
@@ -13,4 +14,6 @@ export const databaseConfig = (
   ssl: {
     rejectUnauthorized: false,
   },
+
+  driver: pg,
 });
