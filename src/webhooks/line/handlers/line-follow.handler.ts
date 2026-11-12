@@ -1,8 +1,8 @@
 import { BadGatewayException, Injectable, Logger } from '@nestjs/common';
-import { UserService } from '@/user/user.service.js';
+import { UserService } from '../../../user/user.service.js';
 import { ConfigService } from '@nestjs/config';
 import { LineBotClient, webhook } from '@line/bot-sdk';
-import { RegistrationService } from '@/registration/registration.service.js';
+import { RegistrationService } from '../../../registration/registration.service.js';
 import { welcomeMessage } from '../flex_messages/welcome-message.js';
 
 @Injectable()

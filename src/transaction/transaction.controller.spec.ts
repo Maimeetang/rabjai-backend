@@ -3,7 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 
 import { TransactionController } from './transaction.controller.js';
 import { TransactionService } from './transaction.service.js';
-import type { AuthenticatedRequest } from '@/auth/interface/request.interface.js';
+import type { AuthenticatedRequest } from '../auth/interface/request.interface.js';
 import type { CreateTransactionDto } from './dto/create-transaction.dto.js';
 import type { UpdateTransactionDto } from './dto/update-transaction.dto.js';
 

@@ -8,9 +8,9 @@ import {
   JoinColumn,
 } from 'typeorm';
 
-import { Account } from '@/account/entities/account.entity.js';
-import { User } from '@/user/entities/user.entity.js';
-import { Category } from '@/category/entities/category.entity.js';
+import { Account } from '../../account/entities/account.entity.js';
+import { User } from '../../user/entities/user.entity.js';
+import { Category } from '../../category/entities/category.entity.js';
 
 @Entity('transactions')
 export class Transaction {

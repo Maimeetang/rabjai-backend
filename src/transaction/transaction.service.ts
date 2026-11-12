@@ -8,7 +8,7 @@ import { Transaction } from './entities/transaction.entity.js';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateTransactionDto } from './dto/create-transaction.dto.js';
 import { UpdateTransactionDto } from './dto/update-transaction.dto.js';
-import { AuthorizationService } from '@/common/authorization/authorization.service.js';
+import { AuthorizationService } from '../common/authorization/authorization.service.js';
 
 @Injectable()
 export class TransactionService {

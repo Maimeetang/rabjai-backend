@@ -1,12 +1,12 @@
 import { BadGatewayException, Injectable, Logger } from '@nestjs/common';
 import { LineBotClient, webhook } from '@line/bot-sdk';
-import { CategoryService } from '@/category/category.service.js';
-import { AccountMemberService } from '@/account_member/account-member.service.js';
-import { GeminiService } from '@/gemini/gemini.service.js';
+import { CategoryService } from '../../../category/category.service.js';
+import { AccountMemberService } from '../../../account_member/account-member.service.js';
+import { GeminiService } from '../../../gemini/gemini.service.js';
 import { ConfigService } from '@nestjs/config';
-import { TransactionService } from '@/transaction/transaction.service.js';
+import { TransactionService } from '../../../transaction/transaction.service.js';
 import { createTransactionFlexMessage } from '../flex_messages/createtransaction-message.js';
-import { TransactionParserResult } from '@/gemini/dto/transaction-parser.dto.js';
+import { TransactionParserResult } from '../../../gemini/dto/transaction-parser.dto.js';
 
 @Injectable()
 export class LineMessageHandler {

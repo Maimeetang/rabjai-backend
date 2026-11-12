@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { GoogleGenAI } from '@google/genai';
-import { Category } from '@/category/entities/category.entity.js';
+import { Category } from '../category/entities/category.entity.js';
 import { TransactionParserResult } from './dto/transaction-parser.dto.js';
 
 @Injectable()

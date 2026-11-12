@@ -5,7 +5,7 @@ import { NotFoundException, BadRequestException } from '@nestjs/common';
 
 import { TransactionService } from './transaction.service.js';
 import { Transaction } from './entities/transaction.entity.js';
-import { AuthorizationService } from '@/common/authorization/authorization.service.js';
+import { AuthorizationService } from '../common/authorization/authorization.service.js';
 import type { CreateTransactionDto } from './dto/create-transaction.dto.js';
 import type { UpdateTransactionDto } from './dto/update-transaction.dto.js';
 import { Between } from 'typeorm';

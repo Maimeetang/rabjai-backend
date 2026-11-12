@@ -5,7 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { LineBotClient, webhook } from '@line/bot-sdk';
-import { TransactionService } from '@/transaction/transaction.service.js';
+import { TransactionService } from '../../../transaction/transaction.service.js';
 import { ConfigService } from '@nestjs/config';
 import { deleteTransactionFlexMessage } from '../flex_messages/deletetransaction-message.js';
 

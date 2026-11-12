@@ -5,7 +5,7 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
-import type { AuthenticatedRequest } from '@/auth/interface/request.interface.js';
+import type { AuthenticatedRequest } from '../auth/interface/request.interface.js';
 import { GetProfileResDto } from './dto/getprofile-res.dto.js';
 import { UserService } from './user.service.js';
 import { AuthGuard } from '@nestjs/passport';

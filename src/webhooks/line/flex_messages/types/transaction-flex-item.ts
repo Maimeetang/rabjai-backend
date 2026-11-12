@@ -1,4 +1,4 @@
-import { CategoryType } from '@/common/enums/category-type.enum.js';
+import { CategoryType } from '../../../../common/enums/category-type.enum.js';
 
 export type TransactionFlexItem = {
   id: number;

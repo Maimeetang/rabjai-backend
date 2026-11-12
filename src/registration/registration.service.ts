@@ -1,8 +1,8 @@
-import { AccountService } from '@/account/account.service.js';
-import { AccountMemberService } from '@/account_member/account-member.service.js';
-import { CategoryService } from '@/category/category.service.js';
-import { User } from '@/user/entities/user.entity.js';
-import { UserService } from '@/user/user.service.js';
+import { AccountService } from '../account/account.service.js';
+import { AccountMemberService } from '../account_member/account-member.service.js';
+import { CategoryService } from '../category/category.service.js';
+import { User } from '../user/entities/user.entity.js';
+import { UserService } from '../user/user.service.js';
 import { Injectable } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 

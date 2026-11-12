@@ -3,10 +3,10 @@ import {
   ForbiddenException,
   Injectable,
 } from '@nestjs/common';
-import { AccountMemberService } from '@/account_member/account-member.service.js';
-import { MemberRole } from '@/common/enums/member-role.enum.js';
-import { CategoryService } from '@/category/category.service.js';
-import { Category } from '@/category/entities/category.entity.js';
+import { AccountMemberService } from '../../account_member/account-member.service.js';
+import { MemberRole } from '../enums/member-role.enum.js';
+import { CategoryService } from '../../category/category.service.js';
+import { Category } from '../../category/entities/category.entity.js';
 
 @Injectable()
 export class AuthorizationService {

@@ -1,4 +1,4 @@
-import type { AuthenticatedRequest } from '@/auth/interface/request.interface.js';
+import type { AuthenticatedRequest } from '../auth/interface/request.interface.js';
 import {
   Body,
   Controller,

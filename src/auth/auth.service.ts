@@ -2,8 +2,8 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { LineAuthService } from './line-auth.service.js';
 import { AuthenticatedUser } from './interface/user.interface.js';
-import { RegistrationService } from '@/registration/registration.service.js';
-import { UserService } from '@/user/user.service.js';
+import { RegistrationService } from '../registration/registration.service.js';
+import { UserService } from '../user/user.service.js';
 
 @Injectable()
 export class AuthService {
