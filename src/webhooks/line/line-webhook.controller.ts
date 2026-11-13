@@ -35,15 +35,38 @@ export class LineWebhookController {
       'LINE_CHANNEL_SECRET',
     );
 
-    if (!signature || !req.rawBody) {
+    // Get raw body
+    let rawBody: Buffer | undefined;
+
+    if (req.rawBody) {
+      rawBody = req.rawBody;
+    } else if (Buffer.isBuffer(req.body)) {
+      rawBody = req.body;
+    } else if (typeof req.body === 'string') {
+      rawBody = Buffer.from(req.body);
+    } else if (req.body) {
+      rawBody = Buffer.from(JSON.stringify(req.body));
+    }
+
+    // Validate signature
+    if (!signature || !rawBody) {
+      throw new UnauthorizedException('Undefined LINE signature');
+    }
+
+    if (!validateSignature(rawBody, channelSecret, signature)) {
       throw new UnauthorizedException('Invalid LINE signature');
     }
 
-    if (!validateSignature(req.rawBody, channelSecret, signature)) {
-      throw new UnauthorizedException('Invalid LINE signature');
+    // Parse request body
+    let parsedBody: LineBotWebhookRequest;
+
+    if (typeof req.body === 'string' || Buffer.isBuffer(req.body)) {
+      parsedBody = JSON.parse(req.body.toString());
+    } else {
+      parsedBody = req.body;
     }
 
-    await this.lineWebhookService.handleEvents(req.body.events);
+    await this.lineWebhookService.handleEvents(parsedBody.events);
 
     return { message: 'OK' };
   }
