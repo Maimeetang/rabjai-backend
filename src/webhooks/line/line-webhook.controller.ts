@@ -8,7 +8,6 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 
-import type { RawBodyRequest } from '@nestjs/common';
 import type { Request } from 'express';
 
 import { validateSignature } from '@line/bot-sdk';
@@ -16,6 +15,10 @@ import { ConfigService } from '@nestjs/config';
 
 import { LineWebhookService } from './line-webhook.service.js';
 import { LineBotWebhookRequest } from './dto/linebot-req.dto.js';
+
+type LineWebhookRequest = Request<unknown, unknown, LineBotWebhookRequest> & {
+  rawBody?: Buffer;
+};
 
 @Controller('webhooks/line')
 export class LineWebhookController {
@@ -28,7 +31,7 @@ export class LineWebhookController {
   @HttpCode(HttpStatus.OK)
   async handleWebhook(
     @Req()
-    req: RawBodyRequest<Request<unknown, unknown, LineBotWebhookRequest>>,
+    req: LineWebhookRequest,
     @Headers('x-line-signature') signature: string,
   ) {
     const channelSecret = this.configService.getOrThrow<string>(
